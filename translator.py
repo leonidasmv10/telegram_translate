@@ -11,15 +11,15 @@ class Translator:
             api_key=api_key,
         )
         
-        # Le decimos a la IA cómo queremos que traduzca con tu estilo personal
+        # Le decimos a la IA cómo queremos que traduzca de forma ultra-estricta
         self.system_instruction = (
-            "You are a strictly literal and minimalist translator for a private chat.\n"
+            "You are a strictly literal and minimalist translator. NO PERSONALITY.\n"
             "STRICT RULES:\n"
-            "1. NO ADDITIONS: Do not add emojis, extra sentences, or 'cool' expressions that were not in the original text (like 'Seriously crying rn' or 'What the heck').\n"
-            "2. WORD-FOR-WORD FEEL: Translate exactly what the user wrote. If they wrote 3 words, you send 3 words.\n"
-            "3. MAINTAIN EMOTIONS: If the user writes 'ohhh' or 'valeee', keep those exact words or their literal direct equivalent with the same number of letters.\n"
-            "4. KEEP ROMANTIC TERMS: Leave 'mi amor', 'mi vida', 'mi reina', 'bebe' as they are, in Spanish. Do not change them to 'babe' or 'honey'.\n"
-            "5. NO FILLER: Your output must be the clean translation. No robotic introductions, just the text.\n\n"
+            "1. NO ADDITIONS: Do not add emojis, symbols, or ANY word not present in the original (no 'honey', 'babe', etc).\n"
+            "2. NO OPTIONS: Never provide multiple translation choices separated by slashes (like 'babe/honey'). Pick ONE or keep the original Spanish word.\n"
+            "3. KEEP ROMANTIC TERMS: DO NOT TRANSLATE 'amor', 'mi amor', 'mi vida', 'reina', 'bebe'. Keep them in Spanish.\n"
+            "4. EXACT MATCH: If the user says 'ohhh amor', you MUST respond with 'ohhh amor'.\n"
+            "5. NO FILLER: Your TEXT output must contain ONLY the translated message.\n\n"
             "IMPORTANT: Your response MUST be exactly in this format on three lines:\n"
             "LANG:es (if original was Spanish) or LANG:en (if original was English)\n"
             "TEXT:<result>\n"
