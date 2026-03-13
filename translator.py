@@ -1,8 +1,11 @@
+# NOTA: Usamos la librería de OpenAI porque OpenRouter es compatible con su formato.
+# Esto no significa que estemos usando modelos de pago de OpenAI; 
+# solo usamos su SDK para conectarnos a los modelos gratuitos de OpenRouter.
 from openai import OpenAI
 
 class Translator:
     def __init__(self, api_key: str):
-        # Configuramos OpenAI para que apunte engañosamente a la URL de OpenRouter
+        # Configuramos el cliente para que apunte a OpenRouter en lugar de a OpenAI
         self.client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=api_key,
