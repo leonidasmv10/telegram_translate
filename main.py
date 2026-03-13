@@ -92,9 +92,9 @@ async def main():
 
             # 3. Formateamos el mensaje dependiendo del idioma detectado
             if lang_original == "es":
-                # Si era español, mandamos SOLO en inglés para no ocupar espacio
-                mensaje_final = f"{texto_procesado}\u200b"
-                print(f"  ✅ [ENVIADO INGLÉS TRADUCIDO ES -> EN]")
+                # Inglés arriba, Español original en negrita abajo (tal como me lo pediste)
+                mensaje_final = f"{texto_procesado}\n\n**{spanish_text}**\u200b"
+                print(f"  ✅ [ENVIADO COMBINADO ES -> EN]")
                 # Guardamos solo cuando es una traducción en tu archivo de estudio
                 history.record_phrase(spanish_text, texto_procesado)
             else:
