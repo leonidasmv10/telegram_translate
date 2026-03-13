@@ -53,10 +53,9 @@ async def main():
 
     print(f"\n✅ Conectado exitosamente a tu cuenta.")
     print(f"👂 Escuchando en tiempo real TODO lo que envíes a: {target_chat}")
-    print("\n👉 CÓMO USARLO AHORA:")
-    print(" - Si escribes en Español: Se traducirá y mandará el doble formato.")
-    print(" - Si escribes en Inglés: Se corregirá tu ortografía y se mandará solo el Inglés.")
-    print(" 5. (Deja esta pantalla abierta de fondo)\n")
+    print("\n👉 MODO: 100% Traducción Instantánea")
+    print(" - Si escribes en Español: Se traducirá al instante con el doble formato.")
+    print(" - Si escribes en Inglés: Se enviará tal cual (modo rápido).\n")
 
     # Detectamos cualquier mensaje NUEVO, SALIENTE (outgoing), enviado al TARGET CHAT
     @client.on(events.NewMessage(outgoing=True, chats=target_chat))
