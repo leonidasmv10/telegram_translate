@@ -2,6 +2,7 @@
 # Esto no significa que estemos usando modelos de pago de OpenAI; 
 # solo usamos su SDK para conectarnos a los modelos gratuitos de OpenRouter.
 from openai import OpenAI
+from deep_translator import GoogleTranslator
 
 class Translator:
     def __init__(self, api_key: str):
@@ -105,4 +106,13 @@ class Translator:
                 traceback.print_exc() # Habilitado para debug profundo
                 continue
                 
-        return "es", f"[Error: Todos los modelos fallaron.] {text}", "NONE"
+        # --- PARACAÍDAS FINAL (Si la IA falla por Rate Limit o error) ---
+        try:
+            print("    [!] Usando traductor de emergencia (no-IA)...")
+            # GoogleTranslator es gratuito y no requiere API Key
+            # Como no tenemos IA para detectar el idioma, intentamos traducir de español a inglés.
+            # Si el texto ya estaba en inglés, Google Translator lo mantendrá o hará poco cambio.
+            emergencia = GoogleTranslator(source='auto', target='en').translate(text)
+            return "es", emergencia, "NONE"
+        except Exception as e:
+            return "es", f"[Error Crítico] No se pudo traducir incluso con el paracaídas. {text}", "NONE"
