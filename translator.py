@@ -35,10 +35,14 @@ class Translator:
         Procesa el texto. Devuelve (idioma_original, texto_procesado, explicacion_gramatical).
         """
         modelos_gratuitos = [
-            "google/gemma-3-27b-it:free",               # Gemma es ultra inteligente pero rebotaba el "System" role
-            "qwen/qwen3-next-80b-a3b-instruct:free",    # Qwen Next (Modelo gigantesco y muy capaz)
-            "meta-llama/llama-3.2-3b-instruct:free",    # Llama 3 ligero, muy rápido
-            "nvidia/nemotron-3-nano-30b-a3b:free"       # Nvidia Nemotron, gran respaldo
+            "google/gemini-2.0-flash-exp:free",
+            "google/gemini-2.0-flash-lite-preview-02-05:free",
+            "google/gemma-2-9b-it:free",
+            "mistralai/mistral-small-24b-instruct-2501:free",
+            "qwen/qwen-turbo-free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "meta-llama/llama-3.2-3b-instruct:free",
+            "nvidia/llama-3.1-nemotron-70b-instruct:free"
         ]
 
         for modelo in modelos_gratuitos:
