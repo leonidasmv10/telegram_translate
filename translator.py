@@ -98,7 +98,7 @@ class Translator:
             except Exception as e:
                 import traceback
                 print(f"    [AVISO] El modelo {modelo} falló. (Causa: {e})")
-                # print(traceback.format_exc()) # Descomentar para debug profundo
+                traceback.print_exc() # Habilitado para debug profundo
                 continue
                 
         return "es", f"[Error: Todos los modelos fallaron.] {text}", "NONE"
