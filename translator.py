@@ -59,10 +59,6 @@ class Translator:
                 )
                 output = completion.choices[0].message.content.strip()
                 
-                # --- FILTRO DE SEGURIDAD EXTRA (Mano de Hierro) ---
-                # Si la IA intenta hacerse la graciosa y pone emojis o textos extra, lo limpiamos aquí.
-                import re
-                
                 # Parsear el formato "LANG:xx \n TEXT:yy \n EXPLANATION:zz"
                 lang = "es"
                 result_text = ""
@@ -70,30 +66,39 @@ class Translator:
                 
                 lines = [line.strip() for line in output.split('\n') if line.strip()]
                 for line in lines:
-                    if line.upper().startswith("LANG:"):
+                    upper_line = line.upper()
+                    if upper_line.startswith("LANG:"):
                         lang = line.split(":", 1)[1].strip().lower()
-                    elif line.upper().startswith("TEXT:"):
+                    elif upper_line.startswith("TEXT:"):
                         result_text = line.split(":", 1)[1].strip()
-                    elif line.upper().startswith("EXPLANATION:"):
+                    elif upper_line.startswith("EXPLANATION:"):
                         explanation = line.split(":", 1)[1].strip()
                 
-                # Si por algún motivo TEXT está vacío o no se parseó bien
-                if not result_text:
-                    result_text = output.split('\n')[0] # Al menos tomamos la primera línea
+                # Si por algún motivo TEXT está vacío, intentamos rescatar algo
+                if not result_text and lines:
+                    # Si la primera línea no tiene etiqueta, quizá es el texto directo
+                    if ":" not in lines[0]:
+                        result_text = lines[0]
+                    else:
+                        result_text = output
 
-                # LIMPIEZA FORZOSA: Eliminamos emojis y cualquier texto después de una barra "/" o paréntesis
-                # que la IA use para dar "opciones". Queremos literalidad absoluta.
-                if lang == "es":
-                    # Elimina emojis comunes (rango unicode) para que no ensucie
-                    result_text = re.sub(r'[^\x00-\x7F]+', '', result_text).strip()
-                    # Si la IA puso opciones tipo "honey/babe", nos quedamos solo con la primera o limpiamos
-                    if "/" in result_text:
-                        result_text = result_text.split("/")[0].strip()
+                # --- LIMPIEZA FORZOSA (Mano de Hierro) ---
+                # Quitamos emojis y basura, pero RESPETAMOS acentos y eñes.
+                import re
+                # Este regex solo permite letras, números, espacios y puntuación básica
+                # (incluye áéíóúñ y sus mayúsculas) eliminando todo lo demás (emojis)
+                result_text = re.sub(r'[^a-zA-Z0-9\s.,!¡?¿áéíóúÁÉÍÓÚñÑ\'\"-]', '', result_text).strip()
+                
+                # Si la IA puso opciones tipo "honey/babe", nos quedamos solo con la primera
+                if "/" in result_text:
+                    result_text = result_text.split("/")[0].strip()
                         
                 return lang, result_text, explanation
 
             except Exception as e:
+                import traceback
                 print(f"    [AVISO] El modelo {modelo} falló. (Causa: {e})")
+                # print(traceback.format_exc()) # Descomentar para debug profundo
                 continue
                 
         return "es", f"[Error: Todos los modelos fallaron.] {text}", "NONE"
