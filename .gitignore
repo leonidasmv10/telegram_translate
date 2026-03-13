@@ -1,0 +1,25 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración y Credenciales (CRÍTICO: No subir)
+config.ini
+mi_sesion.session
+*.session
+*.session-journal
+
+# Archivos de datos locales (Aprendizaje)
+learning_history.csv
+grammar_lessons.txt
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
