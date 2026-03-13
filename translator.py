@@ -59,9 +59,13 @@ class Translator:
                 )
                 output = completion.choices[0].message.content.strip()
                 
+                # --- FILTRO DE SEGURIDAD EXTRA (Mano de Hierro) ---
+                # Si la IA intenta hacerse la graciosa y pone emojis o textos extra, lo limpiamos aquí.
+                import re
+                
                 # Parsear el formato "LANG:xx \n TEXT:yy \n EXPLANATION:zz"
                 lang = "es"
-                result_text = output
+                result_text = ""
                 explanation = "NONE"
                 
                 lines = [line.strip() for line in output.split('\n') if line.strip()]
@@ -72,10 +76,19 @@ class Translator:
                         result_text = line.split(":", 1)[1].strip()
                     elif line.upper().startswith("EXPLANATION:"):
                         explanation = line.split(":", 1)[1].strip()
-                        
-                # Caso de borde por si no respetó el formato
-                if result_text == output and len(lines) > 0 and not lines[0].upper().startswith("LANG:"):
-                    result_text = lines[0]
+                
+                # Si por algún motivo TEXT está vacío o no se parseó bien
+                if not result_text:
+                    result_text = output.split('\n')[0] # Al menos tomamos la primera línea
+
+                # LIMPIEZA FORZOSA: Eliminamos emojis y cualquier texto después de una barra "/" o paréntesis
+                # que la IA use para dar "opciones". Queremos literalidad absoluta.
+                if lang == "es":
+                    # Elimina emojis comunes (rango unicode) para que no ensucie
+                    result_text = re.sub(r'[^\x00-\x7F]+', '', result_text).strip()
+                    # Si la IA puso opciones tipo "honey/babe", nos quedamos solo con la primera o limpiamos
+                    if "/" in result_text:
+                        result_text = result_text.split("/")[0].strip()
                         
                 return lang, result_text, explanation
 
