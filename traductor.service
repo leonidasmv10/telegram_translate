@@ -3,11 +3,11 @@ Description=Telegram Translator Magic Send Service
 After=network.target
 
 [Service]
-# Cambia 'usuario' por tu nombre de usuario en Ubuntu
-User=usuario
-# Cambia esta ruta por la ruta real donde copies la carpeta en Ubuntu
-WorkingDirectory=/home/usuario/traductor
-ExecStart=/home/usuario/traductor/.venv/bin/python3 main.py
+# Cambiado a root porque estás en la carpeta /root/
+User=root
+# Cambiado a tu ruta real del servidor VPS
+WorkingDirectory=/root/telegram_translate
+ExecStart=/root/telegram_translate/.venv/bin/python3 main.py
 Restart=always
 RestartSec=10
 
